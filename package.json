@@ -2,8 +2,13 @@
   "name": "api",
   "version": "0.0.0",
   "private": true,
+  "main": "app.js",
+  "homepage": ".",
   "engines": {
-    "node": "14.x"
+    "node": "14.x",
+    "express": "4.x",
+    "npm": "6.x"
+
   },
   "scripts": {
     "start": "node app.js",
