@@ -1,6 +1,9 @@
 var express = require('express');
 var usersModel = require('../Model/usersmodel')
 var router = express.Router();
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json();
+const mongoose = require('mongoose');
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
@@ -8,23 +11,23 @@ router.get('/', function(req, res, next) {
 });
 
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/create',jsonParser, async (req, res) => {
   const data = new usersModel({
-    firstname: req.body.firstname,
-    lastname: req.body.lastname,
-    username: req.body.username,
+    firstname: req.body.given_name,
+    lastname: req.body.family_name,
+    username: req.body.email,
     email: req.body.email,
     password: req.body.password,
     birthday: req.body.birthday,
     gender: req.body.gender,
     contactnumber: req.body.contactnumber,
-    photo: req.body.photo,
-    enabled: req.body.enabled,
-    datejoined: req.body.datejoined,
-    createdby: req.body.createdby,
-    createddate: req.body.createddate,
-    updatedby: req.body.updatedby,
-    updateddate: req.body.updateddate
+    photo: req.body.picture,
+    enabled: true,
+    datejoined: new Date(),
+    createdby: req.body.name,
+    createddate: new Date(),
+    updatedby: req.body.name,
+    updateddate: new Date()
 })
 
 try{
@@ -38,7 +41,7 @@ catch(error){
 })
 
 //Get all Method
-router.get('/getAll',async  (req, res) => {
+router.get('/getAll',jsonParser,async  (req, res) => {
   try{
     const data = await usersModel.find();
     res.json(data);
@@ -54,6 +57,18 @@ router.get('/getOne/:id',async  (req, res) => {
   try{
     const data = await usersModel.findById(req.params.id);
     res.json(data)
+}
+catch(error){
+    res.status(500).json({message: error.message})
+}
+})
+
+//Get by ID Method
+router.get('/findByEmail/:email', jsonParser,async  (req, res) => {
+  try{
+    const data = await usersModel.find({email: req.params.email},);
+    res.json(data)
+    
 }
 catch(error){
     res.status(500).json({message: error.message})
