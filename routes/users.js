@@ -1,5 +1,5 @@
 var express = require('express');
-var usersModel = require('../Model/usersmodel')
+var usersModel = require('../model/usersmodel')
 var router = express.Router();
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
