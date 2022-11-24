@@ -13,7 +13,7 @@
   "scripts": {
     "start": "node app.js",
     "start:dev": "nodemon",
-    "build": "node app.js",
+    "build": "npm install",
     "test": "nodemon app.js"
   },
   "dependencies": {
