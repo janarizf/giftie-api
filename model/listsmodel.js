@@ -19,11 +19,13 @@ const dataSchema = new mongoose.Schema({
         name:{required: true, type: String},
         website:{type: String},
         category_id	:{type: String},
-        image:{type: String},
+        image:[{ type: String}],
         note:{type: String},
         price:{type: Number},
         quantity:{type: Number},
-        unlimited:{type: Boolean}
+        unlimited:{type: Boolean},
+        addedon:{required: true, type: Date },
+        reserved: {type: Boolean}
             }]
 })
 
