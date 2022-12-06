@@ -32,8 +32,8 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.json());
+app.use(bodyParser.urlencoded({limit: '25mb', extended: true }));
+app.use(express.json({limit: '25mb'}));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
