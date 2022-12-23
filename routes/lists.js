@@ -1,10 +1,19 @@
 var express = require('express');
 var listsModel = require('../model/listsmodel')
-var fileUploadModel = require('../model/fileuploadmodel')
+var imagesmodel = require('../model/imagesmodel')
 var router = express.Router();
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
 const mongoose = require('mongoose');
+
+const MongoClient = require("mongodb").MongoClient;
+const GridFSBucket = require("mongodb").GridFSBucket;
+const url = "mongodb+srv://admin:admin@giftie01.b3zn93e.mongodb.net/giftie";
+
+const baseUrl = "http://localhost:9000/lists/";
+
+const mongoClient = new MongoClient(url);
+
 const upload = require("../middleware/upload");
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
@@ -119,6 +128,7 @@ router.delete('/delete/:id', async (req, res) => {
   }
 })
 
+
 router.post('/fileupload', jsonParser, async (req, res) => {
   try {
     await upload(req, res);
@@ -133,12 +143,40 @@ router.post('/fileupload', jsonParser, async (req, res) => {
 
 router.get('/getAllFiles', async (req, res) => {
   try {
-    const data = await fileUploadModel.find();
-    res.json(data);
+    const data = await imagesmodel.find().limit(1);
+    res.json(data[0]._doc)
   }
   catch (error) {
     res.status(500).json({ message: error.message })
   }
 })
+
+router.get('/getImage/:name', jsonParser, async (req, res) => {
+  try {
+    await mongoClient.connect();
+
+    const database = mongoClient.db('giftie');
+    const bucket = new GridFSBucket(database, {
+      bucketName: 'images',
+    });
+
+    let downloadStream = bucket.openDownloadStreamByName(req.params.name);
+
+    downloadStream.on("data", function (data) {
+      return res.status(200).write(data);
+    });
+
+    downloadStream.on("error", function (err) {
+      return res.status(404).send({ message: "Cannot download the Image!" });
+    });
+    downloadStream.on("end", () => {
+      return res.end();
+    });
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 
 module.exports = router;
