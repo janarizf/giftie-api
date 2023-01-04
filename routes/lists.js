@@ -27,7 +27,7 @@ router.post('/create', jsonParser, async (req, res) => {
     name: req.body.name,
     user_id: req.body.user_id,
     status_id: req.body.status,
-    category_id: req.body.category,
+    category_id: req.body.category_id,
     introduction: req.body.introduction,
     location: req.body.location,
     views: req.body.views,
