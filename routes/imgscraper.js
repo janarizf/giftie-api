@@ -22,32 +22,36 @@ router.get("/", function (req, res, next) {
   })();  */
 
 
-  res.send("API is working properly");
+
 
   (async () => {
     const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     let counter = 0;
     var imgList = [];
-    try {
-      var getName = page.waitForResponse(response => {
-        const matches = /.*\.(jpg|webp)$/.exec(response.url());
-        if (matches && (matches.length === 2)) {
-          console.log(matches[0]);
-          counter += 1;
-          console.log(counter);
-          if (counter > 10) {
+
+    var getName = page.on('response', async (response) => {
+      try {
+        if (counter <= 10) {
+          const matches = /.*\.(jpg|webp)$/.exec(response.url());
+          if (matches && (matches.length === 2)) {
+            console.log(matches[0]);
+            counter += 1;
+            console.log(counter);
             imgList.push(matches[0]);
-            return imgList;
+
           }
         }
-      });
-      if (getName) {
-        console.log(imgList);
+        else {
+          res.send(JSON.parse(imgList));
+          return imgList;
+        }
+      } catch (error) {
+        return;
       }
-    } catch (error) {
+    });
 
-    }
+
     /*   page.on('response', async (response) => {
         try {
           const matches = /.*\.(jpg|webp)$/.exec(response.url());
@@ -70,7 +74,7 @@ router.get("/", function (req, res, next) {
         } catch {
   
         } */
-    await page.goto("https://www.amazon.com/Nintendo-Switch-OLED-Model-White-Joy/dp/B098RKWHHZ/ref=lp_16225009011_1_8");
+    await page.goto("https://www.lazada.com.ph/products/macaron-e7s-tws-bluetooth-headphone-wireless-stereo-earphone-earbuds-ipx7-waterproof-sport-headset-led-display-i1178878328-s4138548509.html?clickTrackInfo=query%253AIn-Ear%252BHeadphones%253Bnid%253A1178878328%253Bsrc%253ALazadaMainSrp%253Brn%253Ad676d397083dc33dc2e56e0b12c02d7e%253Bregion%253Aph%253Bsku%253A1178878328_PH%253Bprice%253A100066706%253Bclient%253Adesktop%253Bsupplier_id%253A100066706%253Basc_category_id%253A7173%253Bitem_id%253A1178878328%253Bsku_id%253A4138548509%253Bshop_id%253A85939&fastshipping=0&freeshipping=0&fs_ab=1&fuse_fs=1&lang=en&location=Laguna&price=2.7E%202&priceCompare=&ratingscore=4.789912779673871&request_id=d676d397083dc33dc2e56e0b12c02d7e&review=2649&sale=13016&search=1&source=search&spm=a2o4l.store_product.list.i41.43f231b3atKCWH&stock=1");
     await browser.close();
   })();
 
