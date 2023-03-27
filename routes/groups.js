@@ -10,11 +10,16 @@ router.get('/', function(req, res, next) {
 //Post Method
 router.post('/post', async (req, res) => {
     const data = new groupsModel({
-        user_id: req.body.user_id,
+        owner_id: req.body.user_id,
+        owner_name: req.body.user,
         name: req.body.name,
         private: req.body.private,
         type_id: req.body.type_id,
-        status_id: req.body.status_id
+        status_id: req.body.status_id,
+        createdby: req.body.user,
+        createddate: new Date(),
+        updatedby: req.body.user,
+        updateddate: new Date()
   })
   
   try{
