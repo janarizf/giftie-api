@@ -7,19 +7,32 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
+router.get('/getByUser/:user', async (req, res) => {
+  try {
+    const data = await groupsModel.find({ user_id: req.params.user });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+
+})
+
 //Post Method
-router.post('/post', async (req, res) => {
+router.post('/create', async (req, res) => {
     const data = new groupsModel({
-        owner_id: req.body.user_id,
-        owner_name: req.body.user,
-        name: req.body.name,
+        owner_id: req.body.owner_id,
+        owner: req.body.owner,
+        groupname: req.body.groupname,
         private: req.body.private,
-        type_id: req.body.type_id,
-        status_id: req.body.status_id,
-        createdby: req.body.user,
+        type: req.body.type,
+        status: req.body.status,
+        createdby: req.body.owner,
         createddate: new Date(),
-        updatedby: req.body.user,
-        updateddate: new Date()
+        updatedby: req.body.owner,
+        updateddate: new Date(),
+        members: req.body.members,
+        lists: req.body.lists
   })
   
   try{

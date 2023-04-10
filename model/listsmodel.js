@@ -28,7 +28,8 @@ const dataSchema = new mongoose.Schema({
         quantity: { type: Number },
         unlimited: { type: Boolean },
         addedon: { required: true, type: Date },
-        taken: { type: Boolean }
+        reserved: { type: Boolean },
+        reservedby: { type: String },
     }]
 })
 

@@ -2,11 +2,11 @@ const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
     owner_id:{required: true, type: String},
-    owner_name:{required: true, type: String},
-    name:{type: String},
+    owner:{required: true, type: String},
+    groupname:{type: String},
     private:{required: true, type: Boolean},
-    type_id:{required: true, type: String},
-    status_id:{required: true, type: String},
+    type:{required: true, type: String},
+    status:{required: true, type: String},
     createdby:{required: true, type: String},
     createddate:{required: true, type: Date },
     updatedby:{required: true, type: String},
@@ -16,10 +16,7 @@ const dataSchema = new mongoose.Schema({
         name:{type: String},
         email:{type: String},
     }],
-    lists:[{
-        list_id:{required: true, type: String},
-        list:{required: true, type: String}
-            }]
+    lists:[{required: true, type: String}]
 })
 
 module.exports = mongoose.model('Groups', dataSchema)
