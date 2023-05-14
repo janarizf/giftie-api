@@ -9,7 +9,7 @@ router.get('/', function(req, res, next) {
 
 router.get('/getByUser/:user', async (req, res) => {
   try {
-    const data = await groupsModel.find({ user_id: req.params.user });
+    const data = await groupsModel.find({ owner_id: req.params.user });
     res.json(data);
   }
   catch (error) {

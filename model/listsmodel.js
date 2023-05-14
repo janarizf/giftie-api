@@ -2,6 +2,11 @@ const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
     name: { required: true, type: String },
+    image: [{
+        id: { type: String },
+        filename:{ type: String }
+    }],
+    groups: [{required: true, type: String}],
     user_id: { required: true, type: String },
     status_id: { required: true, type: String },
     category_id: { required: true, type: String },
