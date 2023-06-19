@@ -2,10 +2,7 @@ const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
     name: { required: true, type: String },
-    image: [{
-        id: { type: String },
-        filename:{ type: String }
-    }],
+    image: [{required: true, type: String}],
     groups: [{required: true, type: String}],
     user_id: { required: true, type: String },
     status_id: { required: true, type: String },
@@ -15,6 +12,7 @@ const dataSchema = new mongoose.Schema({
     set_date: { required: true, type: Date },
     views: { type: Number },
     received: { type: Number },
+    themes: { type: String },
     createdby: { required: true, type: String },
     createddate: { required: true, type: Date },
     updatedby: { required: true, type: String },
