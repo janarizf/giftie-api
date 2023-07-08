@@ -13,6 +13,7 @@ const dataSchema = new mongoose.Schema({
     views: { type: Number },
     received: { type: Number },
     themes: { type: String },
+    private: {type: Boolean},
     createdby: { required: true, type: String },
     createddate: { required: true, type: Date },
     updatedby: { required: true, type: String },

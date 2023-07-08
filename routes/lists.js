@@ -35,6 +35,7 @@ router.post('/create', jsonParser, async (req, res) => {
     received: req.body.received,
     themes: req.body.themes,
     set_date: req.body.set_date,
+    private: req.body.private,
     createdby: req.body.createdby,
     createddate: req.body.createddate,
     updatedby: req.body.updatedby,
