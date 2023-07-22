@@ -1,166 +1,223 @@
 var express = require('express');
 var router = express.Router();
+
 const fs = require('fs');
-const puppeteer = require('puppeteer');
-const { exists } = require('../model/groupsmodel');
-const url = 'https://www.reddit.com';
+const util = require("util");
+const request = util.promisify(require("request"));
 
-router.get("/", function (req, res, next) {
+const puppeteer = require("puppeteer-extra");
+const pluginStealth = require("puppeteer-extra-plugin-stealth");
+const linkPreviewGenerator = require("link-preview-generator");
+var bodyParser = require('body-parser')
+var jsonParser = bodyParser.json();
 
-  /* (async () => {
-      const browser = await puppeteer.launch({ headless: false });
+
+router.get("/getimg/:url", jsonParser, async function (req, res) {
+  const website_url = req.params.url;
+  // const website_url = "https://shopee.ph/Royal-Kludge-RK71-Bluetooth-5.0-USB-C-Dual-Mode-60-71-key-RGB-Backlit-Mechanical-Gaming-Keyboard-Rk71-i.890279864.22902514178";
+  if (website_url == undefined) {
+    res.send("");
+  }
+  else {
+    puppeteer.use(pluginStealth());
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.setViewport({ width: 1366, height: 768});
-    await page.goto("https://www.lazada.com.ph/products/logitech-k380-wireless-multi-device-keyboard-for-windows-apple-ios-apple-tv-android-or-chrome-bluetooth-compact-space-saving-design-pcmaclaptopsmartphonetablet-i567104790-s1542146147.html?clickTrackInfo=undefined&search=1&source=search&spm=a2o4l.searchlist.list.i40.50755844rmPCL3");
+    page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
+    // await page.setViewport({ width: 1366, height: 768 });
+    await page.goto(website_url);
+    await page.exposeFunction("request", request);
     // Wait for 5 seconds
-    const data = await page.content();
-      fs.writeFileSync('file.txt', data);
-      const imgurl = await page.$eval("img", img => img.src)
-      console.log(imgurl)
+    /* const data = await page.content();
+     fs.writeFileSync('file.txt', data);
+     const imgurl = await page.$eval("img", img => img.src)
+     console.log(imgurl)*/
     // Take screenshot
+    const previewImg = await getImg(page, website_url);
+    if (previewImg == null) {
+      const previewData = await linkPreviewGenerator(website_url);
+      previewImg = previewData.img;
+    }
+
     await browser.close();
-  })();  */
 
-
-
-
-  (async () => {
-    const browser = await puppeteer.launch({ headless: false });
-    const page = await browser.newPage();
-    let counter = 0;
-    var imgList = [];
-
-    var getName = page.on('response', async (response) => {
-      try {
-        if (counter <= 10) {
-          const matches = /.*\.(jpg|webp)$/.exec(response.url());
-          if (matches && (matches.length === 2)) {
-            console.log(matches[0]);
-            counter += 1;
-            console.log(counter);
-            imgList.push(matches[0]);
-
-          }
-        }
-        else {
-          res.send(JSON.parse(imgList));
-          return imgList;
-        }
-      } catch (error) {
-        return;
-      }
-    });
-
-
-    /*   page.on('response', async (response) => {
-        try {
-          const matches = /.*\.(jpg|webp)$/.exec(response.url());
-          if (matches && (matches.length === 2)) {
-            console.log(matches[0]);
-            counter += 1;
-            console.log(counter);
-            if (counter > 10) {
-              return;
-            }
-            // const extension = matches[1];
-            //  const buffer = await response.buffer();
-            // console.log(buffer);
-            // fs.writeFileSync(`images/image-${counter}.${extension}`, buffer, 'base64');
-            //   counter += 1;
-  
-          }
-  
-  
-        } catch {
-  
-        } */
-    await page.goto("https://www.lazada.com.ph/products/macaron-e7s-tws-bluetooth-headphone-wireless-stereo-earphone-earbuds-ipx7-waterproof-sport-headset-led-display-i1178878328-s4138548509.html?clickTrackInfo=query%253AIn-Ear%252BHeadphones%253Bnid%253A1178878328%253Bsrc%253ALazadaMainSrp%253Brn%253Ad676d397083dc33dc2e56e0b12c02d7e%253Bregion%253Aph%253Bsku%253A1178878328_PH%253Bprice%253A100066706%253Bclient%253Adesktop%253Bsupplier_id%253A100066706%253Basc_category_id%253A7173%253Bitem_id%253A1178878328%253Bsku_id%253A4138548509%253Bshop_id%253A85939&fastshipping=0&freeshipping=0&fs_ab=1&fuse_fs=1&lang=en&location=Laguna&price=2.7E%202&priceCompare=&ratingscore=4.789912779673871&request_id=d676d397083dc33dc2e56e0b12c02d7e&review=2649&sale=13016&search=1&source=search&spm=a2o4l.store_product.list.i41.43f231b3atKCWH&stock=1");
-    await browser.close();
-  })();
-
-  const getImg = (async () => {
-
-  })
-  /*  (async () => {
-     let resultObj = {}
-     let returnedResponse;
-     let browser
-     try {
-       browser = await puppeteer.launch({
-         headless: false,
-         args: [
-           '--no-sandbox',
-           '--disable-setuid-sandbox',
-           '--disable-infobars',
-           '--disable-features=site-per-process',
-           '--window-position=0,0',
-           '--disable-extensions',
-           '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X   10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0    Safari/537.36"'
-         ]
-       });
-       const page = await browser.newPage();
-       await page.setViewport({ width: 1366, height: 800 });
-       await page.goto('https://www.amazon.in/s?k=keyboard&tag=amdot-  21&ref=nb_sb_noss', { waitUntil: 'load', timeout: 30000 });
-       await page.waitForSelector('#search > div.s-desktop-width-max')
-       returnedResponse = await page.evaluate(() => {
-         let elementArray = [];
-         let dataArray = [];
-         if (document.querySelectorAll('#search > div.s-desktop-width-max.s-desktop-content.sg-row > div.sg-col-20-of-24.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div').length > 0) {
-           let xyz = document.querySelectorAll('#search > div.s-desktop-width-max.s-desktop-content.sg-row> div.sg-col-20-of-24.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28> div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div')
-           for (let divI = 3; divI < xyz.length - 4; divI++) {
-             elementArray.push(xyz[divI])
-           }
-           let promise = new Promise((resolve, reject) => {
-             setTimeout(() => {
-               for (let text = 0; text < elementArray.length; text++) {
-                 dataArray.push({
-                   "ProductName": elementArray[text].querySelector('div > span > div > div > div  h2 > a > span').innerText,
-                   "productURL": elementArray[text].querySelector('div > span > div > div > div  h2 > a ').href,
-                   "productImg": elementArray[text].querySelector('div > span > div > div  span > a > div > img ').src,
-                   "price": elementArray[text].querySelector('div > span > div > div span.a-price-whole') ? elementArray[text].querySelector('div > span > div > div span.a-price-whole').innerText.trim().replace(/\,/, "") : '0',
-                   "strike": elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen') ? elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen').innerText.trim().substr(1, 9).replace(/\,/, "") : '0',
-                   "rating": elementArray[text].querySelector('div > span > div > div a > i ') ? elementArray[text].querySelector('div > span > div > div a > i').innerText : "",
-                   "offer": elementArray[text].querySelector('div > span > div > div > div.a-section.a-spacing-micro.s-grid-status-badge-container > a .a-badge .a-badge-text') ? elementArray[text].querySelector('div > span > div > div > div.a-section.a-spacing-micro.s-grid-status-badge-container > a .a-badge .a-badge-text').innerText : ''
-                 })
-                 resolve(dataArray)
-               }
-             }, 4000)
-           })
-           return promise;
-         } else if (document.querySelectorAll('#search > div.s-desktop-width-max.s-opposite-dir > div > div.sg-col-20-of-24.s-matching-dir.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div').length > 0) {
-           let xyz = document.querySelectorAll('#search > div.s-desktop-width-max.s-opposite-dir > div > div.sg-col-20-of-24.s-matching-dir.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div')
-           for (let divI = 2; divI < xyz.length - 4; divI++) {
-             elementArray.push(xyz[divI])
-           }
-           let promise = new Promise((resolve, reject) => {
-             setTimeout(() => {
-               for (let text = 0; text < elementArray.length; text++) {
-                 dataArray.push({
-                   "ProductName": elementArray[text].querySelector('div > span > div > div > div  h2 > a > span').innerText,
-                   "productURL": elementArray[text].querySelector('div > span > div > div > div  h2 > a ').href,
-                   "productImg": elementArray[text].querySelector('div > span > div > div  span > a > div > img ').src,
-                   "price": elementArray[text].querySelector('div > span > div > div span.a-price-whole') ? elementArray[text].querySelector('div > span > div > div span.a-price-whole').innerText.trim().replace(/\,/, "") : '0',
-                   "strike": elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen') ? elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen').innerText.trim().replace(/\,/, "").substr(1, 9) : '0',
-                   "rating": elementArray[text].querySelector('div > span > div > div a > i ') ? elementArray[text].querySelector('div > span > div > div a > i').innerText : "",
-                   "offer": elementArray[text].querySelector('div.a-section div.a-section span') ? elementArray[text].querySelector('div.a-section div.a-section span').innerText : ''
-                 })
-                 resolve(dataArray)
-               }
-             }, 4000)
-           })
-           return promise;
-         }
-       })
-       resultObj.product = returnedResponse
-       console.log(resultObj.product)
-       await browser.close();
-     }
-     catch (e) {
-       console.log('Amazon scrap error-> ', e);
-       await browser.close();
-     }
-   })(); */
-
+    res.send(previewImg);
+  }
 });
+
+const getImg = async (page, uri) => {
+  const img = await page.evaluate(async () => {
+    let imgs = Array.from(document.getElementsByTagName("img"));
+    if (imgs.length > 0) {
+      imgs = imgs.filter((img) => {
+        let addImg = true;
+        if (img.naturalWidth > img.naturalHeight) {
+          if (img.naturalWidth / img.naturalHeight > 3) {
+            addImg = false;
+          }
+        } else {
+          if (img.naturalHeight / img.naturalWidth > 3) {
+            addImg = false;
+          }
+        }
+        if (img.naturalHeight <= 200 || img.naturalWidth <= 200) {
+          addImg = false;
+        }
+        console.log("add img");
+        return addImg;
+      });
+      if (imgs.length > 0) {
+        imgs.forEach((img) =>
+          img.src.indexOf("//") === -1
+            ? (img.src = `${new URL(uri).origin}/${img.src}`)
+            : img.src
+        );
+        console.log(imgs);
+        console.log("img length");
+        var num = 0;
+        if (imgs.length > 1)
+          num = 1;
+
+        return imgs[num].src;
+      }
+    }
+    return null;
+  });
+  return img;
+};
+
+/*(async () => {
+  const browser = await puppeteer.launch({ headless: false });
+  const page = await browser.newPage();
+  let counter = 0;
+  var imgList = [];
+
+  var getName = page.on('response', async (response) => {
+    try {
+      if (counter <= 10) {
+        const matches = /.*\.(jpg|webp)$/.exec(response.url());
+        if (matches && (matches.length === 2)) {
+          console.log(matches[0]);
+          counter += 1;
+          console.log(counter);
+          imgList.push(matches[0]);
+
+        }
+      }
+      return imgList;
+    } catch (error) {
+      return error;
+    }
+  });
+
+  res.send(getName);
+  /*   page.on('response', async (response) => {
+      try {
+        const matches = /.*\.(jpg|webp)$/.exec(response.url());
+        if (matches && (matches.length === 2)) {
+          console.log(matches[0]);
+          counter += 1;
+          console.log(counter);
+          if (counter > 10) {
+            return;
+          }
+          // const extension = matches[1];
+          //  const buffer = await response.buffer();
+          // console.log(buffer);
+          // fs.writeFileSync(`images/image-${counter}.${extension}`, buffer, 'base64');
+          //   counter += 1;
+ 
+        }
+ 
+ 
+      } catch {
+ 
+      } 
+  await page.goto("https://www.lazada.com.ph/products/yocaz-vegetable-chips-mix-vegetable-chips-dried-vegetables-snacks-vegetables-and-fruits-chips-dried-fruits-fruits-and-vegetables-chips-dried-fruits-and-vegetables-dried-vegetables-and-fruits-dried-vegetables-chips-250g-i3846546624-s21167741395.html?spm=a2o4l.home.flashSale.2.239eca18vl8ycR&search=1&mp=1&c=fs&clickTrackInfo=rs%3A0.2527588903903961%3Bfs_item_discount_price%3A164.68%3Bitem_id%3A3846546624%3Bpctr%3A0.2527588903903961%3Bcalib_pctr%3A0.0%3Bmt%3Ahot%3Bfs_utdid%3A-1%3Bfs_item_sold_cnt%3A46%3Babid%3A287818%3Bfs_item_price%3A339.00%3Bpvid%3Aaa6fcd75-f539-45e3-87bf-1fff615e5c41%3Bfs_min_price_l30d%3A0%3Bdata_type%3Aflashsale%3Bfs_pvid%3Aaa6fcd75-f539-45e3-87bf-1fff615e5c41%3Btime%3A1689262196%3Bfs_biz_type%3Afs%3Bscm%3A1007.17760.287818.%3Bchannel_id%3A0000%3Bfs_item_discount%3A51%25%3Bcampaign_id%3A232761&scm=1007.17760.287818.0");
+  await browser.close();
+})();*/
+
+/* const getImg = (async () => {
+ 
+ })
+   (async () => {
+    let resultObj = {}
+    let returnedResponse;
+    let browser
+    try {
+      browser = await puppeteer.launch({
+        headless: false,
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-infobars',
+          '--disable-features=site-per-process',
+          '--window-position=0,0',
+          '--disable-extensions',
+          '--user-agent="Mozilla/5.0 (Macintosh; Intel Mac OS X   10_12_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/65.0.3312.0    Safari/537.36"'
+        ]
+      });
+      const page = await browser.newPage();
+      await page.setViewport({ width: 1366, height: 800 });
+      await page.goto('https://www.amazon.in/s?k=keyboard&tag=amdot-  21&ref=nb_sb_noss', { waitUntil: 'load', timeout: 30000 });
+      await page.waitForSelector('#search > div.s-desktop-width-max')
+      returnedResponse = await page.evaluate(() => {
+        let elementArray = [];
+        let dataArray = [];
+        if (document.querySelectorAll('#search > div.s-desktop-width-max.s-desktop-content.sg-row > div.sg-col-20-of-24.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div').length > 0) {
+          let xyz = document.querySelectorAll('#search > div.s-desktop-width-max.s-desktop-content.sg-row> div.sg-col-20-of-24.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28> div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div')
+          for (let divI = 3; divI < xyz.length - 4; divI++) {
+            elementArray.push(xyz[divI])
+          }
+          let promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+              for (let text = 0; text < elementArray.length; text++) {
+                dataArray.push({
+                  "ProductName": elementArray[text].querySelector('div > span > div > div > div  h2 > a > span').innerText,
+                  "productURL": elementArray[text].querySelector('div > span > div > div > div  h2 > a ').href,
+                  "productImg": elementArray[text].querySelector('div > span > div > div  span > a > div > img ').src,
+                  "price": elementArray[text].querySelector('div > span > div > div span.a-price-whole') ? elementArray[text].querySelector('div > span > div > div span.a-price-whole').innerText.trim().replace(/\,/, "") : '0',
+                  "strike": elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen') ? elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen').innerText.trim().substr(1, 9).replace(/\,/, "") : '0',
+                  "rating": elementArray[text].querySelector('div > span > div > div a > i ') ? elementArray[text].querySelector('div > span > div > div a > i').innerText : "",
+                  "offer": elementArray[text].querySelector('div > span > div > div > div.a-section.a-spacing-micro.s-grid-status-badge-container > a .a-badge .a-badge-text') ? elementArray[text].querySelector('div > span > div > div > div.a-section.a-spacing-micro.s-grid-status-badge-container > a .a-badge .a-badge-text').innerText : ''
+                })
+                resolve(dataArray)
+              }
+            }, 4000)
+          })
+          return promise;
+        } else if (document.querySelectorAll('#search > div.s-desktop-width-max.s-opposite-dir > div > div.sg-col-20-of-24.s-matching-dir.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div').length > 0) {
+          let xyz = document.querySelectorAll('#search > div.s-desktop-width-max.s-opposite-dir > div > div.sg-col-20-of-24.s-matching-dir.sg-col-28-of-32.sg-col-16-of-20.sg-col.sg-col-32-of-36.sg-col-8-of-12.sg-col-12-of-16.sg-col-24-of-28 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div')
+          for (let divI = 2; divI < xyz.length - 4; divI++) {
+            elementArray.push(xyz[divI])
+          }
+          let promise = new Promise((resolve, reject) => {
+            setTimeout(() => {
+              for (let text = 0; text < elementArray.length; text++) {
+                dataArray.push({
+                  "ProductName": elementArray[text].querySelector('div > span > div > div > div  h2 > a > span').innerText,
+                  "productURL": elementArray[text].querySelector('div > span > div > div > div  h2 > a ').href,
+                  "productImg": elementArray[text].querySelector('div > span > div > div  span > a > div > img ').src,
+                  "price": elementArray[text].querySelector('div > span > div > div span.a-price-whole') ? elementArray[text].querySelector('div > span > div > div span.a-price-whole').innerText.trim().replace(/\,/, "") : '0',
+                  "strike": elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen') ? elementArray[text].querySelector('div > span > div > div span.a-price.a-text-price .a-offscreen').innerText.trim().replace(/\,/, "").substr(1, 9) : '0',
+                  "rating": elementArray[text].querySelector('div > span > div > div a > i ') ? elementArray[text].querySelector('div > span > div > div a > i').innerText : "",
+                  "offer": elementArray[text].querySelector('div.a-section div.a-section span') ? elementArray[text].querySelector('div.a-section div.a-section span').innerText : ''
+                })
+                resolve(dataArray)
+              }
+            }, 4000)
+          })
+          return promise;
+        }
+      })
+      resultObj.product = returnedResponse
+      console.log(resultObj.product)
+      await browser.close();
+    }
+    catch (e) {
+      console.log('Amazon scrap error-> ', e);
+      await browser.close();
+    }
+  })(); */
+
 
 module.exports = router;

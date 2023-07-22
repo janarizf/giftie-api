@@ -18,6 +18,17 @@ router.get('/getByUser/:user', async (req, res) => {
 
 })
 
+router.post('/adduser/:user', async (req, res) => {
+  try {
+    const data = await groupsModel.find({ owner_id: req.params.user });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+
+})
+
 //Post Method
 router.post('/create', async (req, res) => {
     const data = new groupsModel({
