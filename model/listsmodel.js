@@ -14,6 +14,7 @@ const dataSchema = new mongoose.Schema({
     received: { type: Number },
     themes: { type: String },
     private: {type: Boolean},
+    url: { type: String },
     createdby: { required: true, type: String },
     createddate: { required: true, type: Date },
     updatedby: { required: true, type: String },
@@ -22,6 +23,7 @@ const dataSchema = new mongoose.Schema({
         list_id: { required: true, type: String },
         name: { required: true, type: String },
         website: { type: String },
+        url: { type: String },
         category_id: { type: String },
         image: [{
             id: { type: String },

@@ -10,8 +10,6 @@ const MongoClient = require("mongodb").MongoClient;
 const GridFSBucket = require("mongodb").GridFSBucket;
 const url = "mongodb+srv://admin:admin@giftie01.b3zn93e.mongodb.net/giftie";
 
-const baseUrl = "http://localhost:9000/lists/";
-
 const mongoClient = new MongoClient(url);
 
 const upload = require("../middleware/upload");
@@ -41,6 +39,7 @@ router.post('/create', jsonParser, async (req, res) => {
     updatedby: req.body.updatedby,
     updateddate: req.body.updateddate
   })
+  data.url = data._id;
 
   try {
     const dataToSave = await data.save();
