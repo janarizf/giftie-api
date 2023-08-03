@@ -18,10 +18,26 @@ router.get('/getByUser/:user', async (req, res) => {
 
 });
 
-router.post('/adduser/:user', async (req, res) => {
+router.post('/addmember', async (req, res) => {
   try {
-    const data = await groupsModel.find({ owner_id: req.params.user });
-    res.json(data);
+    const { user_id, name, email, group_id } = req.body;
+    const user = {
+      user_id: user_id,
+      name: name,
+      email: email
+    }
+    const group = await groupsModel.findById(group_id);
+    group.members.push(user);
+
+    const options = { new: true };
+
+    const result = await groupsModel.findByIdAndUpdate(
+      group_id,  group, options
+    )
+
+
+
+    res.json(result);
   }
   catch (error) {
     res.status(500).json({ message: error.message })
