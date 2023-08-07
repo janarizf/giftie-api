@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
 var imgScraper = require("./routes/imgscraper copy")
+var adminRouter = require("./routes/admin")
 
 const mongoose = require('mongoose');
 
@@ -41,6 +42,7 @@ app.use('/users', usersRouter);
 app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/imgscraper", imgScraper)
+app.use("/admin", adminRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
