@@ -15,6 +15,10 @@ const dataSchema = new mongoose.Schema({
     themes: { type: String },
     private: {type: Boolean},
     url: { type: String },
+    followers:[{
+        user: { required: true, type: String },
+        user_id: { required: true, type: String }
+    }],
     createdby: { required: true, type: String },
     createddate: { required: true, type: Date },
     updatedby: { required: true, type: String },

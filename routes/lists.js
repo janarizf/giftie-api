@@ -72,6 +72,16 @@ router.get('/getByUser/:user', async (req, res) => {
   }
 
 })
+router.get('/getByFollower/:user', async (req, res) => {
+  try {
+    const data = await listsModel.find({ "followers.user_id": req.params.user });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+
+})
 //Get by ID Method
 router.get('/getOne/:id', jsonParser, async (req, res) => {
   try {
