@@ -32,7 +32,7 @@ router.post('/addmember', async (req, res) => {
     const options = { new: true };
 
     const result = await groupsModel.findByIdAndUpdate(
-      group_id,  group, options
+      group_id, group, options
     )
 
 
@@ -114,6 +114,25 @@ router.patch('/update/:id', async (req, res) => {
   }
 })
 
+router.patch('/updatebyid/:groupid/:listid', async (req, res) => {
+  try {
+    const groupid = req.params.id;
+    const listid = req.params.listid;
+    const options = { new: true };
+
+    const groupdata = await groupsModel.findById(groupid);
+
+    const result = await groupsModel.findByIdAndUpdate(
+      groupid, groupdata, options
+    )
+
+    res.send(result)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
 //Delete by ID Method
 router.delete('/delete/:id', async (req, res) => {
   try {
@@ -162,10 +181,18 @@ router.post('/sendinvite', async function (req, res) {
       res.status(500).send('Error sending email');
     } else {
       console.log('Email sent:', info.response);
-      const emailList = emails.split(',');
       const options = { new: true };
       var updatedData = await groupsModel.findById(groupid);
-      updatedData.invited = emailList;
+      const emailList = emails.split(',');
+
+      for (let index = 0; index < emailList.length; index++) {
+        const data = {
+          email: emailList[0],
+          accepted: false
+        }
+        updatedData.invited.push(data);
+      }
+
       const result = await groupsModel.findByIdAndUpdate(
         groupid, updatedData, options
       )

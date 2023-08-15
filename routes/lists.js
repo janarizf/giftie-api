@@ -1,6 +1,7 @@
 var express = require('express');
-var listsModel = require('../model/listsmodel')
-var imagesmodel = require('../model/imagesmodel')
+var listsModel = require('../model/listsmodel');
+var imagesmodel = require('../model/imagesmodel');
+var groupsmodel = require('../model/groupsmodel');
 var router = express.Router();
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
@@ -80,7 +81,16 @@ router.get('/getByFollower/:user', async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-
+})
+router.get('/getByGroup/:groupid', async (req, res) => {
+  try {
+    const groupdata = await groupsmodel.findById(req.params.groupid);
+    const data = await listsModel.find({ _id: groupdata.lists });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
 })
 //Get by ID Method
 router.get('/getOne/:id', jsonParser, async (req, res) => {
