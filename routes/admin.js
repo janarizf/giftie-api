@@ -6,24 +6,47 @@ var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
 
 /* GET All list categories */
-router.get('/getAllListCategories',jsonParser,async  (req, res) => {
-    try{
-      const data = await listCategoriesModel.find();
-      res.json(data);
+router.get('/getAllListCategories', jsonParser, async (req, res) => {
+  try {
+    const data = await listCategoriesModel.find();
+    res.json(data);
   }
-  catch(error){
-      res.status(500).json({message: error.message})
+  catch (error) {
+    res.status(500).json({ message: error.message })
   }
 })
 
-router.get('/getAllThemes',jsonParser,async  (req, res) => {
-  try{
+router.get('/themes/getAllThemes', jsonParser, async (req, res) => {
+  try {
     const data = await themesmodel.find();
     res.json(data);
-}
-catch(error){
-    res.status(500).json({message: error.message})
-}
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+
+//Post Method
+router.post('/themes/create', jsonParser, async (req, res) => {
+  try {
+    const data = new themesmodel({
+      name: req.body.name,
+      category_id: req.body.category_id,
+      headercolor: req.body.name,
+      bodycolor: req.body.body,
+      textcolor: req.body.text,
+      headerimage: req.body.header,
+      backgroundimage: req.body.background,
+    })
+
+    const dataToSave = await data.save();
+    res.status(200).json(dataToSave)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+
 })
 
 module.exports = router;
