@@ -1,5 +1,6 @@
 var express = require('express');
 var listCategoriesModel = require('../model/admin/listcategoriesmodel')
+var themesCategoriesModel = require("../model/admin/themescategoriesmodel")
 var themesmodel = require("../model/admin/themesmodel")
 var router = express.Router();
 var bodyParser = require('body-parser')
@@ -9,6 +10,15 @@ var jsonParser = bodyParser.json();
 router.get('/getAllListCategories', jsonParser, async (req, res) => {
   try {
     const data = await listCategoriesModel.find();
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+router.get('/themes/getAllThemesCategories', jsonParser, async (req, res) => {
+  try {
+    const data = await themesCategoriesModel.find();
     res.json(data);
   }
   catch (error) {

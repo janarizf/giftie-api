@@ -6,7 +6,7 @@ const dataSchema = new mongoose.Schema({
     active: { required: true, type: Boolean },
 })
 
-module.exports = mongoose.model('list_categories', dataSchema)
+module.exports = mongoose.model('theme_categories', dataSchema)
 
 
 
