@@ -26,6 +26,15 @@ router.get('/themes/getAllThemes', jsonParser, async (req, res) => {
   }
 })
 
+router.get('/themes/getThemesById/:id', async (req, res) => {
+  try {
+    const data = await themesmodel.findById(req.params.id);
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
 
 //Post Method
 router.post('/themes/create', jsonParser, async (req, res) => {
