@@ -10,8 +10,11 @@ var usersRouter = require('./routes/users');
 var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
 var imgScraper = require("./routes/imgscraper copy")
-var adminRouter = require("./routes/admin")
 
+var themesRouter = require("./routes/admin/themes/themes")
+var listCategoriesModel = require("./routes/admin/categories/listcategories")
+var itemCategoriesModel = require("./routes/admin/categories/itemcategories")
+var themesCategoriesModel = require("./routes/admin/categories/themescategories")
 const mongoose = require('mongoose');
 
 main().catch(err => console.log(err));
@@ -42,7 +45,15 @@ app.use('/users', usersRouter);
 app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/imgscraper", imgScraper)
-app.use("/admin", adminRouter)
+
+app.use('/admin/themes',themesRouter)
+app.use('/admin/category/item',itemCategoriesModel)
+app.use('/admin/category/list',listCategoriesModel)
+app.use('/admin/category/themes',themesCategoriesModel)
+
+
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
