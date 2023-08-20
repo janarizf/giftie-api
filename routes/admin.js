@@ -15,7 +15,7 @@ router.get('/getAllListCategories', jsonParser, async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-})
+});
 router.get('/themes/getAllThemesCategories', jsonParser, async (req, res) => {
   try {
     const data = await themesCategoriesModel.find();
@@ -24,7 +24,7 @@ router.get('/themes/getAllThemesCategories', jsonParser, async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-})
+});
 
 router.get('/themes/getAllThemes', jsonParser, async (req, res) => {
   try {
@@ -34,7 +34,7 @@ router.get('/themes/getAllThemes', jsonParser, async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-})
+});
 
 router.get('/themes/getThemesById/:id', async (req, res) => {
   try {
@@ -44,7 +44,7 @@ router.get('/themes/getThemesById/:id', async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-})
+});
 
 router.get('/themes/getThemesByCategory/:cat', async (req, res) => {
   try {
@@ -54,7 +54,7 @@ router.get('/themes/getThemesByCategory/:cat', async (req, res) => {
   catch (error) {
     res.status(500).json({ message: error.message })
   }
-})
+});
 
 //Post Method
 router.post('/themes/create', jsonParser, async (req, res) => {
@@ -76,6 +76,34 @@ router.post('/themes/create', jsonParser, async (req, res) => {
     res.status(400).json({ message: error.message })
   }
 
-})
+});
+
+router.patch('/themes/update/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const updatedData = req.body;
+    const options = { new: true };
+
+    const result = await themesmodel.findByIdAndUpdate(
+      id, updatedData, options
+    )
+
+    res.send(result)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+});
+
+router.delete('/themes/delete/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const data = await groupsModel.findByIdAndDelete(id)
+    res.send(`Document with ${data.name} has been deleted..`)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+});
 
 module.exports = router;
