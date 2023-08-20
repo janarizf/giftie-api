@@ -46,6 +46,16 @@ router.get('/themes/getThemesById/:id', async (req, res) => {
   }
 })
 
+router.get('/themes/getThemesByCategory/:cat', async (req, res) => {
+  try {
+    const data = await themesmodel.find({category_id: req.params.cat});
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 //Post Method
 router.post('/themes/create', jsonParser, async (req, res) => {
   try {
