@@ -45,10 +45,10 @@ router.get('/getAllThemes', jsonParser, async (req, res) => {
         name: req.body.name,
         category_id: req.body.category_id,
         headercolor: req.body.name,
-        bodycolor: req.body.body,
-        textcolor: req.body.text,
-        headerimage: req.body.header,
-        backgroundimage: req.body.background,
+        bodycolor: req.body.bodycolor,
+        textcolor: req.body.textcolor,
+        headerimage: req.body.headerimage,
+        backgroundimage: req.body.backgroundimage,
       })
   
       const dataToSave = await data.save();
