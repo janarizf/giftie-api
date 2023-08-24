@@ -11,6 +11,7 @@ var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
 var imgScraper = require("./routes/imgscraper copy")
 
+var adminUserRouter = require("./routes/admin/adminuser/adminuser")
 var themesRouter = require("./routes/admin/themes/themes")
 var listCategoriesModel = require("./routes/admin/categories/listcategories")
 var itemCategoriesModel = require("./routes/admin/categories/itemcategories")
@@ -46,6 +47,7 @@ app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/imgscraper", imgScraper)
 
+app.use('/admin/user',adminUserRouter)
 app.use('/admin/themes',themesRouter)
 app.use('/admin/category/item',itemCategoriesModel)
 app.use('/admin/category/list',listCategoriesModel)
