@@ -32,19 +32,29 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
      const imgurl = await page.$eval("img", img => img.src)
      console.log(imgurl)*/
     // Take screenshot
-    const previewImg = await getImg(page, website_url);
-    if (previewImg == null) {
-      const previewData = await linkPreviewGenerator(website_url);
-      previewImg = previewData.img;
+    try {
+
+
+      var previewImg = await getImg(page, website_url);
+      if (previewImg == null) {
+        const previewData = await linkPreviewGenerator(website_url);
+        previewImg = previewData.img;
+      }
+
+      await browser.close();
+
+      res.send(previewImg);
+    } catch (error) {
+      console.log(error)
+      res.status(200).send();
     }
-
-    await browser.close();
-
-    res.send(previewImg);
   }
 });
 
 const getImg = async (page, uri) => {
+  try {
+    
+ 
   const img = await page.evaluate(async () => {
     let imgs = Array.from(document.getElementsByTagName("img"));
     if (imgs.length > 0) {
@@ -83,6 +93,10 @@ const getImg = async (page, uri) => {
     return null;
   });
   return img;
+} catch (error) {
+    console.log(error);
+    return null;
+}
 };
 
 /*(async () => {
