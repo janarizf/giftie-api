@@ -4,7 +4,7 @@ const dataSchema = new mongoose.Schema({
     owner_id: { required: true, type: String },
     owner: { required: true, type: String },
     groupname: { type: String },
-    photo:{type: String},
+    image:{type: String},
     private: { required: true, type: Boolean },
     type: { required: true, type: String },
     status: { required: true, type: String },
