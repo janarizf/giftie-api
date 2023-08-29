@@ -20,7 +20,7 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   }
   else {
     puppeteer.use(pluginStealth());
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox'] });
     const page = await browser.newPage();
     page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
     // await page.setViewport({ width: 1366, height: 768 });
