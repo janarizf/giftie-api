@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
-var imgScraper = require("./routes/imgscraper copy")
+var imgScraper = require("./routes/imgscraper")
 
 var adminUserRouter = require("./routes/admin/adminuser/adminuser")
 var themesRouter = require("./routes/admin/themes/themes")
