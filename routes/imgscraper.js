@@ -47,10 +47,10 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
     });
     const page = await browser.newPage();
     await page.setBypassCSP(true);
-    page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
+   // page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
     // await page.setViewport({ width: 1366, height: 768 });
     await page.goto(website_url);
-    await page.exposeFunction("request", request);
+  //  await page.exposeFunction("request", request);
     // Wait for 5 seconds
     /* const data = await page.content();
      fs.writeFileSync('file.txt', data);
