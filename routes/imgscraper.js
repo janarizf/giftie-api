@@ -15,7 +15,7 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   const website_url = "https://www.lazada.com.ph/products/qkz-ck5-in-ear-earphone-stereo-race-sport-headset-music-driving-noise-cancelling-earphones-with-microphone-i2307681833-s10447791699.html?c=&channelLpJumpArgs=&clickTrackInfo=query%253A%253Bnid%253A2307681833%253Bsrc%253ALazadaMainSrp%253Brn%253A5391a4aa2f93d3a2ca348632a37e44d7%253Bregion%253Aph%253Bsku%253A2307681833_PH%253Bprice%253A99%253Bclient%253Adesktop%253Bsupplier_id%253A500176725046%253Bpromotion_biz%253A%253Basc_category_id%253A7173%253Bitem_id%253A2307681833%253Bsku_id%253A10447791699%253Bshop_id%253A2255752&fastshipping=0&freeshipping=0&fs_ab=2&fuse_fs=&lang=en&location=Metro%20Manila&price=99&priceCompare=skuId%3A10447791699%3Bsource%3Alazada-search-voucher%3Bsn%3A5391a4aa2f93d3a2ca348632a37e44d7%3BoriginPrice%3A9900%3BdisplayPrice%3A9900%3BsinglePromotionId%3A900000016977294%3BsingleToolCode%3ApromPrice%3BvoucherPricePlugin%3A0%3Btimestamp%3A1693414755158&ratingscore=4.957503320053121&request_id=5391a4aa2f93d3a2ca348632a37e44d7&review=753&sale=3350&search=1&source=search&spm=a2o4l.searchlistcategory.list.i40.2a7a7720YeVz98&stock=1";
   puppeteer.use(pluginStealth());
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ['--disable-setuid-sandbox',
       '--no-sandbox',
       '--disable-web-security']
