@@ -31,7 +31,7 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   }
   else {
     puppeteer.use(pluginStealth());
-    const browser = await puppeteer.launch({ headless: true, args: [ '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
+    const browser = await puppeteer.launch({ headless: true, args: [ '--single-process','--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
     const page = await browser.newPage();
     await page.setBypassCSP(true);
     page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
