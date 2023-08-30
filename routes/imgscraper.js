@@ -20,7 +20,11 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   }
   else {
     puppeteer.use(pluginStealth());
-    const browser = await puppeteer.launch({ headless: true,args: ['--no-sandbox'] });
+    const browser = await puppeteer.launch({ headless: true,
+      args: ['--no-sandbox',
+      '--disable-web-security',
+      '--disable-features=IsolateOrigins',
+      '--disable-site-isolation-trials'] });
     const page = await browser.newPage();
     page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
     // await page.setViewport({ width: 1366, height: 768 });
