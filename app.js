@@ -9,7 +9,7 @@ var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
-var imgScraper = require("./routes/imgscraper copy")
+var imgScraper = require("./routes/imgscraper")
 
 var adminUserRouter = require("./routes/admin/adminuser/adminuser")
 var themesRouter = require("./routes/admin/themes/themes")
@@ -36,6 +36,16 @@ app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(cors());
+// app.use(function(req, res, next) {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+//   res.header(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested, Content-Type, Accept Authorization"
+//   )
+//   res.header('Access-Control-Allow-Credentials', true);
+//   next();
+// });
 app.use(bodyParser.urlencoded({limit: '25mb', extended: true }));
 app.use(express.json({limit: '25mb'}));
 app.use(cookieParser());

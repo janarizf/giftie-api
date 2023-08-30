@@ -44,7 +44,7 @@ router.get('/getAllThemes', jsonParser, async (req, res) => {
       const data = new themesmodel({
         name: req.body.name,
         category_id: req.body.category_id,
-        headercolor: req.body.name,
+        headercolor: req.body.headercolor,
         bodycolor: req.body.bodycolor,
         textcolor: req.body.textcolor,
         headerimage: req.body.headerimage,
