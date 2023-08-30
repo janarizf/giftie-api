@@ -20,7 +20,7 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   await page.goto(website_url);
   console.log('WORKING')
   await browser.close()
-  process.exit(0)
+ 
 });
 
 router.get("/getimg/:url", jsonParser, async function (req, res) {
