@@ -25,6 +25,7 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   await page.setBypassCSP(true);
   await page.goto(website_url);
   console.log('WORKING')
+  res.send("puppet working");
   await browser.close()
 
 });
