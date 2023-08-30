@@ -13,8 +13,7 @@
     "start": "node app.js",
     "start:dev": "nodemon",
     "build": "npm install",
-    "test": "nodemon app.js",
-    "heroku-postbuild": "mkdir ./.cache && mv /app/.cache/puppeteer ./.cache"
+    "test": "nodemon app.js"
   },
   "dependencies": {
     "axios": "^1.2.0",
