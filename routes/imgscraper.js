@@ -25,13 +25,21 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   await page.setBypassCSP(true);
   page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
   await page.goto(website_url);
-  await page.exposeFunction("request", request); 
+  await page.exposeFunction("request", request);
 
-  var shopeeImg = await scrpShopee(page);
-   await browser.close();
-  console.log(shopeeImg)
-  res.send(shopeeImg);
+  try {
 
+
+    var shopeeImg = await scrpShopee(page);
+
+    console.log('success');
+    console.log(shopeeImg);
+    await browser.close();
+    res.send(shopeeImg);
+
+  } catch (error) {
+ console.log(error);
+  }
 });
 
 router.get("/getimg/:url", jsonParser, async function (req, res) {
@@ -79,6 +87,7 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
           previewImg = await getImg(page, website_url);
         }
         await browser.close();
+        console.log(previewImg);
         res.send(previewImg);
       }
     }
@@ -129,6 +138,7 @@ const getImg = async (page, uri) => {
       }
       return null;
     });
+    console.log(img);
     return img;
   } catch (error) {
     console.log(error);
@@ -144,6 +154,7 @@ const scrpShopee = async (page) => {
       return document.querySelector("div.product-carousel div div.stardust-carousel__item-list-wrapper ul li:nth-child(1) div div img").src;
     });
 
+    console.log("shapi - " + textContent);
     return textContent;
   }
   catch (error) {
@@ -159,7 +170,7 @@ const scrpLazada = async (page) => {
     const textContent = await page.evaluate(() => {
       return document.querySelector('div.gallery-preview-panel div img.pdp-mod-common-image.gallery-preview-panel__image').src;
     });
-
+    console.log("shapi - " + textContent);
     return textContent;
   }
   catch (error) {
