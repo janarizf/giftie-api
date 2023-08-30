@@ -172,7 +172,7 @@ const scrpShopee = async (page) => {
   }
   catch (error) {
     console.log(error);
-    return null;
+    return "null";
 
   }
 };
@@ -183,12 +183,12 @@ const scrpLazada = async (page) => {
     const textContent = await page.evaluate(() => {
       return document.querySelector('div.gallery-preview-panel div img.pdp-mod-common-image.gallery-preview-panel__image').src;
     });
-    console.log("shapi - " + textContent);
+    console.log("lazada - " + textContent);
     return textContent;
   }
   catch (error) {
     console.log(error);
-    return null;
+    return "null";
 
   }
 };
