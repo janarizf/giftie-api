@@ -15,7 +15,7 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   const website_url = "https://shopee.ph/BOYA-BY-V1-V2-Wireless-Lavalier-Microphone-with-Active-Noise-Cancellation-Vlogging-Live-Mic-for-iPhone-Android-Smartphones-Action-Camera-Laptop-PC-YouTube-Content-Creators-i.589909774.21567751433?sp_atk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb&xptdk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb";
   puppeteer.use(pluginStealth());
   const browser = await puppeteer.launch({
-    headless: false,
+    headless: true,
     args: ['--disable-setuid-sandbox',
       '--no-sandbox',
       '--disable-web-security']
