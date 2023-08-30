@@ -15,17 +15,20 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   const website_url = "https://shopee.ph/BOYA-BY-V1-V2-Wireless-Lavalier-Microphone-with-Active-Noise-Cancellation-Vlogging-Live-Mic-for-iPhone-Android-Smartphones-Action-Camera-Laptop-PC-YouTube-Content-Creators-i.589909774.21567751433?sp_atk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb&xptdk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb";
   puppeteer.use(pluginStealth());
   const browser = await puppeteer.launch({
-    headless: true,
+    headless: false,
     args: ['--disable-setuid-sandbox',
       '--no-sandbox',
-      '--disable-web-security'],
-    devtools: true
+      '--disable-web-security']
   });
+
   const page = await browser.newPage();
   await page.setBypassCSP(true);
+  page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
   await page.goto(website_url);
+  await page.exposeFunction("request", request); 
+
   var shopeeImg = await scrpShopee(page);
-  await browser.close();
+   await browser.close();
   console.log(shopeeImg)
   res.send(shopeeImg);
 
@@ -48,10 +51,10 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
     });
     const page = await browser.newPage();
     await page.setBypassCSP(true);
-   // page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
+    page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
     // await page.setViewport({ width: 1366, height: 768 });
     await page.goto(website_url);
-  //  await page.exposeFunction("request", request);
+    await page.exposeFunction("request", request);
     // Wait for 5 seconds
     /* const data = await page.content();
      fs.writeFileSync('file.txt', data);
