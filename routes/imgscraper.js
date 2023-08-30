@@ -21,7 +21,7 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   else {
     puppeteer.use(pluginStealth());
     const browser = await puppeteer.launch({ headless: true,
-      args: ['--no-sandbox',
+      args: ['--no-sandbox', "--disable-setuid-sandbox",
       '--disable-web-security',
       '--disable-features=IsolateOrigins',
       '--disable-site-isolation-trials'] });
