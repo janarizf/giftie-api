@@ -14,7 +14,7 @@ var jsonParser = bodyParser.json();
 router.get("/puppettest", jsonParser, async function (req, res) {
   const website_url = "https://www.lazada.com.ph/products/charge-2-mini-portable-superbass-speaker-splashproof-wireless-bluetooth-speaker-smart-hi-fi-sound-powerful-sound-speaker-i3415034994-s17475253308.html?spm=a2o4l.home.just4u.14.58b7ca18DQgIuX&&scm=1007.17519.162103.0&pvid=8ee7b08d-e378-45ab-9690-d77f4c5a13ec&search=0&clickTrackInfo=pvid%3A8ee7b08d-e378-45ab-9690-d77f4c5a13ec%3Bchannel_id%3A0000%3Bmt%3Ahot%3Bitem_id%3A3415034994%3Bself_ab_id%3A162103%3Bself_app_id%3A7519%3Blayer_buckets%3A5437.25236_955.3631_6059.28889%3Bpos%3A13%3B";
   puppeteer.use(pluginStealth());
-  const browser = await puppeteer.launch({ headless: true, args: [ '--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
+  const browser = await puppeteer.launch({ headless: true, args: [ '--single-process','--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
   const page = await browser.newPage();
   await page.setBypassCSP(true);
   await page.goto(website_url);
