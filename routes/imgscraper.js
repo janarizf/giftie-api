@@ -104,6 +104,7 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
         console.log(previewImg);
         res.send(previewImg);
       }
+      await browser.close();
     }
     catch (error) {
       console.log(error)
