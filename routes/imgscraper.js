@@ -86,12 +86,20 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
 
       if (website_url.includes("shopee")) {
         var shopeeImg = await scrpShopee(page);
+        console.log("shapee url - " + shopeeImg)
         await browser.close();
+        if (shopeeImg) {
+          res.status(500).send();
+        }
         res.send(shopeeImg);
       }
       else if (website_url.includes("lazada")) {
         var LazadaImg = await scrpLazada(page);
+        console.log("lazada url - " + LazadaImg)
         await browser.close();
+        if (LazadaImg) {
+          res.status(500).send();
+        }
         res.send(LazadaImg);
       }
       else {
@@ -101,7 +109,10 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
           previewImg = await getImg(page, website_url);
         }
         await browser.close();
-        console.log(previewImg);
+        if (previewImg) {
+          res.status(500).send();
+        }
+        console.log("img url - " + previewImg)
         res.send(previewImg);
       }
       await browser.close();

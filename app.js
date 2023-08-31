@@ -85,12 +85,5 @@ app.use(function(err, req, res, next) {
 app.listen(process.env.PORT || 9000, () => {
   console.log('Example app listening on port 9000')
 })
-/* mongoose
-  .connect('mongodb+srv://admin:admin@giftie01.b3zn93e.mongodb.net/giftie01?retryWrites=true&w=majority')
-  .then(result => {
-    app.listen(9000);
-  })
-  .catch(err => {
-    console.log(err);
-  }); */
+
 module.exports = app;
