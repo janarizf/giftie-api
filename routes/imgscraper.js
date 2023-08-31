@@ -23,7 +23,7 @@ router.get("/puppettest", jsonParser, async function (req, res) {
   try {
     const page = await browser.newPage();
     await page.setBypassCSP(true);
-    page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36");
+    page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
     await page.goto(website_url);
     await page.exposeFunction("request", request);
 
@@ -70,8 +70,8 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
       });
       const page = await browser.newPage();
       await page.setBypassCSP(true);
-      page.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.83 Safari/537.36");
-      // await page.setViewport({ width: 1366, height: 768 });
+      page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)")
+         // await page.setViewport({ width: 1366, height: 768 });
       await page.goto(website_url);
       await page.exposeFunction("request", request);
       // Wait for 5 seconds

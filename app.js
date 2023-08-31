@@ -83,7 +83,7 @@ app.use(function (err, req, res, next) {
 });
 
 app.listen(process.env.PORT || 9000, () => {
-  console.log('Example app listening on port 9000')
+  console.log('Giftie Backend running')
 })
 
 
