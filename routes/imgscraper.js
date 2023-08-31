@@ -5,15 +5,15 @@ const fs = require('fs');
 const util = require("util");
 const request = util.promisify(require("request"));
 
-const puppeteer = require("puppeteer-extra");
-const pluginStealth = require("puppeteer-extra-plugin-stealth");
+const puppeteer = require("puppeteer");
+//const pluginStealth = require("puppeteer-extra-plugin-stealth");
 const linkPreviewGenerator = require("link-preview-generator");
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
 
 router.get("/puppettest", jsonParser, async function (req, res) {
   const website_url = "https://www.lazada.com.ph/products/p9-wireless-bluetooth-headphones-with-mic-noise-cancelling-headsets-stereo-sound-earphones-sports-gaming-headphones-supports-tf-built-in-mic-noise-cancellation-bluetooth-headphones-music-play-wireless-headphone-i3437591126-s17627432388.html?spm=a2o4l.home.flashSale.4.239eca18z6rm8C&search=1&mp=1&c=fs&clickTrackInfo=rs%3A0.1976751834154129%3Bfs_item_discount_price%3A262.99%3Bitem_id%3A3437591126%3Bpctr%3A0.1976751834154129%3Bcalib_pctr%3A0.0%3Bmt%3Ai2i%3Bfs_utdid%3A-1%3Bfs_item_sold_cnt%3A20%3Babid%3A287818%3Bfs_item_price%3A499.00%3Bpvid%3Aea942512-e59b-4def-8c3c-f493dacc6aca%3Bfs_min_price_l30d%3A0%3Bdata_type%3Aflashsale%3Bfs_pvid%3Aea942512-e59b-4def-8c3c-f493dacc6aca%3Btime%3A1693465827%3Bfs_biz_type%3Afs%3Bscm%3A1007.17760.287818.%3Bchannel_id%3A0000%3Bfs_item_discount%3A47%25%3Bcampaign_id%3A241495&scm=1007.17760.287818.0";
-  puppeteer.use(pluginStealth());
+ // puppeteer.use(pluginStealth());
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--disable-setuid-sandbox',
@@ -63,7 +63,6 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   }
   else {
     try {
-      puppeteer.use(pluginStealth());
       const browser = await puppeteer.launch({
         headless: true,
         args: ['--no-sandbox',
