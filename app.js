@@ -20,13 +20,13 @@ const mongoose = require('mongoose');
 
 main().catch(err => console.log(err));
 
- async function main() {
-  var mongo = await mongoose.connect('mongodb://admin:admin@ac-zde6ghn-shard-00-00.b3zn93e.mongodb.net:27017,ac-zde6ghn-shard-00-01.b3zn93e.mongodb.net:27017,ac-zde6ghn-shard-00-02.b3zn93e.mongodb.net:27017/?ssl=true&replicaSet=atlas-v7spbf-shard-0&authSource=admin&retryWrites=true&w=majority',{dbName: 'giftie'});
- console.log('connected')
+async function main() {
+  var mongo = await mongoose.connect('mongodb://admin:admin@ac-zde6ghn-shard-00-00.b3zn93e.mongodb.net:27017,ac-zde6ghn-shard-00-01.b3zn93e.mongodb.net:27017,ac-zde6ghn-shard-00-02.b3zn93e.mongodb.net:27017/?ssl=true&replicaSet=atlas-v7spbf-shard-0&authSource=admin&retryWrites=true&w=majority', { dbName: 'giftie' });
+  console.log('connected')
   // use `await mongoose.connect('mongodb://user:password@localhost:27017/test');` if your database has auth enabled
   //mongodb+srv://admin:admin@giftie01.b3zn93e.mongodb.net/?retryWrites=true&w=majority
 }
- 
+
 
 var app = express();
 
@@ -46,8 +46,8 @@ app.use(cors());
 //   res.header('Access-Control-Allow-Credentials', true);
 //   next();
 // });
-app.use(bodyParser.urlencoded({limit: '25mb', extended: true }));
-app.use(express.json({limit: '25mb'}));
+app.use(bodyParser.urlencoded({ limit: '25mb', extended: true }));
+app.use(express.json({ limit: '25mb' }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -57,22 +57,22 @@ app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/imgscraper", imgScraper)
 
-app.use('/admin/user',adminUserRouter)
-app.use('/admin/themes',themesRouter)
-app.use('/admin/category/item',itemCategoriesModel)
-app.use('/admin/category/list',listCategoriesModel)
-app.use('/admin/category/themes',themesCategoriesModel)
+app.use('/admin/user', adminUserRouter)
+app.use('/admin/themes', themesRouter)
+app.use('/admin/category/item', itemCategoriesModel)
+app.use('/admin/category/list', listCategoriesModel)
+app.use('/admin/category/themes', themesCategoriesModel)
 
 
 
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -86,4 +86,34 @@ app.listen(process.env.PORT || 9000, () => {
   console.log('Example app listening on port 9000')
 })
 
+
+process.on('SIGTERM', signal => {
+  console.log(`Process ${process.pid} received a SIGTERM signal`)
+  process.exit(0)
+})
+
+process.on('SIGINT', signal => {
+  console.log(`Process ${process.pid} has been interrupted`)
+  process.exit(0)
+})
+
+process.on('uncaughtException', err => {
+  console.log(`Uncaught Exception: ${err.message}`)
+  process.exit(1)
+})
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.log('Unhandled rejection at ', promise, `reason: ${err.message}`)
+  process.exit(1)
+})
+
+process.on('<signal or error event>', _ => {
+  server.close(() => {
+    process.exit(0)
+  })
+  // If server hasn't finished in 1000ms, shut down process
+  setTimeout(() => {
+    process.exit(0)
+  }, 1000).unref() // Prevents the timeout from registering on event loop
+})
 module.exports = app;
