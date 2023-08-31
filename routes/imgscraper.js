@@ -12,15 +12,34 @@ var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
 
 router.get("/puppettest", jsonParser, async function (req, res) {
-  const website_url = "https://www.lazada.com.ph/products/charge-2-mini-portable-superbass-speaker-splashproof-wireless-bluetooth-speaker-smart-hi-fi-sound-powerful-sound-speaker-i3415034994-s17475253308.html?spm=a2o4l.home.just4u.14.58b7ca18DQgIuX&&scm=1007.17519.162103.0&pvid=8ee7b08d-e378-45ab-9690-d77f4c5a13ec&search=0&clickTrackInfo=pvid%3A8ee7b08d-e378-45ab-9690-d77f4c5a13ec%3Bchannel_id%3A0000%3Bmt%3Ahot%3Bitem_id%3A3415034994%3Bself_ab_id%3A162103%3Bself_app_id%3A7519%3Blayer_buckets%3A5437.25236_955.3631_6059.28889%3Bpos%3A13%3B";
+  const website_url = "https://shopee.ph/BOYA-BY-V1-V2-Wireless-Lavalier-Microphone-with-Active-Noise-Cancellation-Vlogging-Live-Mic-for-iPhone-Android-Smartphones-Action-Camera-Laptop-PC-YouTube-Content-Creators-i.589909774.21567751433?sp_atk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb&xptdk=9f6a6382-2106-4c82-ad7a-d4df3c0d38cb";
   puppeteer.use(pluginStealth());
-  const browser = await puppeteer.launch({ headless: true, args: [ '--single-process','--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--disable-setuid-sandbox',
+      '--no-sandbox',
+      '--disable-web-security']
+  });
+
   const page = await browser.newPage();
   await page.setBypassCSP(true);
+  page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
   await page.goto(website_url);
-  console.log('WORKING')
-  await browser.close()
- 
+  await page.exposeFunction("request", request);
+
+  try {
+
+
+    var shopeeImg = await scrpShopee(page);
+
+    console.log('success');
+    console.log(shopeeImg);
+    await browser.close();
+    res.send(shopeeImg);
+
+  } catch (error) {
+ console.log(error);
+  }
 });
 
 router.get("/getimg/:url", jsonParser, async function (req, res) {
@@ -31,7 +50,13 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
   }
   else {
     puppeteer.use(pluginStealth());
-    const browser = await puppeteer.launch({ headless: true, args: [ '--single-process','--disable-gpu', '--disable-dev-shm-usage', '--disable-setuid-sandbox', '--no-sandbox', '--disable-web-security', '--disable-features=IsolateOrigins', '--disable-site-isolation-trials', '--disable-features=BlockInsecurePrivateNetworkRequests', ], devtools: true});
+    const browser = await puppeteer.launch({
+      headless: true,
+      args: ['--disable-setuid-sandbox',
+        '--no-sandbox',
+        '--disable-web-security'],
+      devtools: true
+    });
     const page = await browser.newPage();
     await page.setBypassCSP(true);
     page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)");
@@ -59,9 +84,10 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
         const previewData = await linkPreviewGenerator(website_url);
         var previewImg = previewData.img;
         if (previewImg == null) {
-            previewImg = await getImg(page, website_url);
+          previewImg = await getImg(page, website_url);
         }
         await browser.close();
+        console.log(previewImg);
         res.send(previewImg);
       }
     }
@@ -112,6 +138,7 @@ const getImg = async (page, uri) => {
       }
       return null;
     });
+    console.log(img);
     return img;
   } catch (error) {
     console.log(error);
@@ -127,6 +154,7 @@ const scrpShopee = async (page) => {
       return document.querySelector("div.product-carousel div div.stardust-carousel__item-list-wrapper ul li:nth-child(1) div div img").src;
     });
 
+    console.log("shapi - " + textContent);
     return textContent;
   }
   catch (error) {
@@ -142,7 +170,7 @@ const scrpLazada = async (page) => {
     const textContent = await page.evaluate(() => {
       return document.querySelector('div.gallery-preview-panel div img.pdp-mod-common-image.gallery-preview-panel__image').src;
     });
-
+    console.log("shapi - " + textContent);
     return textContent;
   }
   catch (error) {
