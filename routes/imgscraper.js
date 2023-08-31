@@ -66,10 +66,8 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
       puppeteer.use(pluginStealth());
       const browser = await puppeteer.launch({
         headless: true,
-        args: ['--disable-setuid-sandbox',
-          '--no-sandbox',
-          '--disable-web-security'],
-        devtools: true
+        args: ['--no-sandbox',
+          '--disable-web-security']
       });
       const page = await browser.newPage();
       await page.setBypassCSP(true);
