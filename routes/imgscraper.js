@@ -65,12 +65,12 @@ router.get("/getimg/:url", jsonParser, async function (req, res) {
     try {
       const browser = await puppeteer.launch({
         headless: true,
-        args: ['--disable-web-security']
+        args: ['--no-sandbox',
+          '--disable-web-security']
       });
       const page = await browser.newPage();
       await page.setBypassCSP(true);
-      page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)")
-         // await page.setViewport({ width: 1366, height: 768 });
+    page.setUserAgent("facebookexternalhit/1.1 (+http://www.facebook.com/externalhit_uatext.php)")   // await page.setViewport({ width: 1366, height: 768 });
       await page.goto(website_url);
       await page.exposeFunction("request", request);
       // Wait for 5 seconds
