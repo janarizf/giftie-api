@@ -10,6 +10,7 @@ var usersRouter = require('./routes/users');
 var groupsRouter = require("./routes/groups");
 var listsRouter = require("./routes/lists");
 var imgScraper = require("./routes/imgscraper")
+var shopee = require('./routes/shopee')
 
 var adminUserRouter = require("./routes/admin/adminuser/adminuser")
 var themesRouter = require("./routes/admin/themes/themes")
@@ -56,6 +57,8 @@ app.use('/users', usersRouter);
 app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
 app.use("/imgscraper", imgScraper)
+app.use("/shopee", shopee)
+
 
 app.use('/admin/user', adminUserRouter)
 app.use('/admin/themes', themesRouter)
