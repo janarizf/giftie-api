@@ -121,6 +121,29 @@ router.patch('/update/:id', async (req, res) => {
   }
 })
 
+router.post('/updateItemLink/', async (req, res) => {
+  try {
+
+    const { listId, itemId, website } = req.body;
+    const data = await listsModel.find({ "items._id": itemId });
+
+    const updateDocument = {
+      $set: { "items.$.website": website }
+    };
+    // Update only non-oil items used for fried rice 
+ 
+
+    const result = await listsModel.findOneAndUpdate(
+      { "_id": listId, "items._id": itemId }, updateDocument
+    )
+
+    res.send(result)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
 router.patch('/additem/:id', async (req, res) => {
   try {
     const id = req.params.id;
