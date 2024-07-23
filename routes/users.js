@@ -13,21 +13,22 @@ router.get('/', function(req, res, next) {
 //Post Method
 router.post('/create',jsonParser, async (req, res) => {
   const data = new usersModel({
-    firstname: req.body.given_name,
-    lastname: req.body.family_name,
-    username: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    userName: req.body.userName,
+    bio: req.body.bio,
     email: req.body.email,
     password: req.body.password,
     birthday: req.body.birthday,
-    gender: req.body.gender,
-    contactnumber: req.body.contactnumber,
-    photo: req.body.picture,
+    gender: "",
+    contactNumber: req.body.contactNumber,
+    photo: "",
     enabled: true,
-    datejoined: new Date(),
-    createdby: req.body.name,
-    createddate: new Date(),
-    updatedby: req.body.name,
-    updateddate: new Date()
+    dateJoined: new Date(),
+    createdBy: req.body.userName,
+    createdDate: new Date(),
+    updatedBy: req.body.userName,
+    updatedDate: new Date()
 })
 
 try{

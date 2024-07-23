@@ -26,6 +26,17 @@ router.get('/getCategoryById/:id', async (req, res) => {
   }
 });
 
+
+router.get('/getCategoryActive', jsonParser, async (req, res) => {
+  try {
+    const data = await listCategoriesModel.find().where('active').equals(true);
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+});
+
 router.post('/create', jsonParser, async (req, res) => {
   try {
     const data = new listCategoriesModel({

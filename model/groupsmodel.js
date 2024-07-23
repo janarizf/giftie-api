@@ -24,4 +24,4 @@ const dataSchema = new mongoose.Schema({
     lists: [{ required: true, type: String }]
 })
 
-module.exports = mongoose.model('Groups', dataSchema)
+module.exports = mongoose.model('groups', dataSchema)

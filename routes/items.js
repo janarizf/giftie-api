@@ -1,7 +1,6 @@
 var express = require('express');
-var listsModel = require('../model/listsmodel');
+var itemsModel = require('../model/itemsmodel');
 var imagesmodel = require('../model/imagesmodel');
-var groupsmodel = require('../model/groupsmodel');
 var router = express.Router();
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
@@ -22,22 +21,19 @@ router.get('/', async function (req, res, next) {
 
 //Post Method
 router.post('/create', jsonParser, async (req, res) => {
-  const data = new listsModel({
+  const data = new itemsModel({
+    listId: req.body.listId,
     name: req.body.name,
+    website: req.body.website,
+    links: req.body.links,
+    categoryId:  req.body.categoryId,
     image: req.body.image,
-    groupIds: req.body.groupIds,
-    userId: req.body.userId,
-    statusId: req.body.statusId,
-    categoryId: req.body.categoryId,
     description: req.body.description,
-    location: req.body.location,
-    eventDate: req.body.eventDate,
-    views: req.body.views,
-    received: req.body.received,
-    themes: req.body.themes,
-    private: req.body.private,
-    url: req.body.url,
-    followers: req.body.followers,
+    price: req.body.price,
+    quantity: req.body.quantity,
+    unlimited: req.body.unlimited,
+    reserved: req.body.reserved,
+    reservedBy: req.body.reservedBy,
     createdById: req.body.createdById,
     createdDate: req.body.createdDate,
     updatedById: req.body.updatedById,
@@ -58,7 +54,7 @@ router.post('/create', jsonParser, async (req, res) => {
 //Get all Method
 router.get('/getAll', async (req, res) => {
   try {
-    const data = await listsModel.find();
+    const data = await itemsModel.find();
     res.json(data);
   }
   catch (error) {
@@ -68,26 +64,7 @@ router.get('/getAll', async (req, res) => {
 })
 router.get('/getByUser/:user', async (req, res) => {
   try {
-    const data = await listsModel.find({ user_id: req.params.user });
-    res.json(data);
-  }
-  catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-})
-router.get('/getByFollower/:user', async (req, res) => {
-  try {
-    const data = await listsModel.find({ "followers.user_id": req.params.user });
-    res.json(data);
-  }
-  catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-})
-router.get('/getByGroup/:groupid', async (req, res) => {
-  try {
-    const groupdata = await groupsmodel.findById(req.params.groupid);
-    const data = await listsModel.find({ _id: groupdata.lists });
+    const data = await itemsModel.find({ user_id: req.params.user });
     res.json(data);
   }
   catch (error) {
@@ -97,7 +74,7 @@ router.get('/getByGroup/:groupid', async (req, res) => {
 //Get by ID Method
 router.get('/getById/:id', jsonParser, async (req, res) => {
   try {
-    const data = await listsModel.findById(req.params.id);
+    const data = await itemsModel.findById(req.params.id);
     res.json(data)
   }
   catch (error) {
@@ -112,7 +89,7 @@ router.patch('/update/:id', async (req, res) => {
     const updatedData = req.body;
     const options = { new: true };
 
-    const result = await listsModel.findByIdAndUpdate(
+    const result = await itemsModel.findByIdAndUpdate(
       id, updatedData, options
     )
 
@@ -127,7 +104,7 @@ router.post('/updateItemLink/', async (req, res) => {
   try {
 
     const { listId, itemId, website } = req.body;
-    const data = await listsModel.find({ "items._id": itemId });
+    const data = await itemsModel.find({ "items._id": itemId });
 
     const updateDocument = {
       $set: { "items.$.website": website }
@@ -135,7 +112,7 @@ router.post('/updateItemLink/', async (req, res) => {
     // Update only non-oil items used for fried rice 
 
 
-    const result = await listsModel.findOneAndUpdate(
+    const result = await itemsModel.findOneAndUpdate(
       { "_id": listId, "items._id": itemId }, updateDocument
     )
 
@@ -152,7 +129,7 @@ router.patch('/additem/:id', async (req, res) => {
     const updatedData = req.body;
     const options = { new: true };
 
-    const result = await listsModel.findByIdAndUpdate(
+    const result = await itemsModel.findByIdAndUpdate(
       id, updatedData, options
     )
 
@@ -167,7 +144,7 @@ router.patch('/additem/:id', async (req, res) => {
 router.delete('/delete/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await listsModel.findByIdAndDelete(id)
+    const data = await itemsModel.findByIdAndDelete(id)
     res.send(`Document with ${data.name} has been deleted..`)
   }
   catch (error) {
