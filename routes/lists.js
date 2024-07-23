@@ -68,7 +68,7 @@ router.get('/getAll', async (req, res) => {
 })
 router.get('/getByUser/:user', async (req, res) => {
   try {
-    const data = await listsModel.find({ user_id: req.params.user });
+    const data = await listsModel.find({ userId: req.params.user });
     res.json(data);
   }
   catch (error) {
@@ -77,7 +77,7 @@ router.get('/getByUser/:user', async (req, res) => {
 })
 router.get('/getByFollower/:user', async (req, res) => {
   try {
-    const data = await listsModel.find({ "followers.user_id": req.params.user });
+    const data = await listsModel.find({ "followers.userId": req.params.user });
     res.json(data);
   }
   catch (error) {
@@ -123,46 +123,6 @@ router.patch('/update/:id', async (req, res) => {
   }
 })
 
-router.post('/updateItemLink/', async (req, res) => {
-  try {
-
-    const { listId, itemId, website } = req.body;
-    const data = await listsModel.find({ "items._id": itemId });
-
-    const updateDocument = {
-      $set: { "items.$.website": website }
-    };
-    // Update only non-oil items used for fried rice 
-
-
-    const result = await listsModel.findOneAndUpdate(
-      { "_id": listId, "items._id": itemId }, updateDocument
-    )
-
-    res.send(result)
-  }
-  catch (error) {
-    res.status(400).json({ message: error.message })
-  }
-})
-
-router.patch('/additem/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const updatedData = req.body;
-    const options = { new: true };
-
-    const result = await listsModel.findByIdAndUpdate(
-      id, updatedData, options
-    )
-
-    res.send(result)
-  }
-  catch (error) {
-    res.status(400).json({ message: error.message })
-  }
-})
-
 //Delete by ID Method
 router.delete('/delete/:id', async (req, res) => {
   try {
@@ -185,16 +145,6 @@ router.post('/fileupload', jsonParser, async (req, res) => {
   }
   catch (error) {
     res.status(400).json({ message: error.message })
-  }
-})
-
-router.get('/getAllFiles', async (req, res) => {
-  try {
-    const data = await imagesmodel.find().limit(1);
-    res.json(data[0]._doc)
-  }
-  catch (error) {
-    res.status(500).json({ message: error.message })
   }
 })
 

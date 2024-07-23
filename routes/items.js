@@ -26,7 +26,7 @@ router.post('/create', jsonParser, async (req, res) => {
     name: req.body.name,
     website: req.body.website,
     links: req.body.links,
-    categoryId:  req.body.categoryId,
+    categoryId: req.body.categoryId,
     image: req.body.image,
     description: req.body.description,
     price: req.body.price,
@@ -62,9 +62,33 @@ router.get('/getAll', async (req, res) => {
   }
 
 })
+
+router.get('/getByList/:id', async (req, res) => {
+  try {
+    const data = await itemsModel.find({ listId: req.params.id });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/getByListReserved/:id', async (req, res) => {
+  try {
+    const data = await itemsModel.find({
+      listId: req.params.id,
+      reserved: true
+    });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 router.get('/getByUser/:user', async (req, res) => {
   try {
-    const data = await itemsModel.find({ user_id: req.params.user });
+    const data = await itemsModel.find({ userId: req.params.user });
     res.json(data);
   }
   catch (error) {
@@ -114,23 +138,6 @@ router.post('/updateItemLink/', async (req, res) => {
 
     const result = await itemsModel.findOneAndUpdate(
       { "_id": listId, "items._id": itemId }, updateDocument
-    )
-
-    res.send(result)
-  }
-  catch (error) {
-    res.status(400).json({ message: error.message })
-  }
-})
-
-router.patch('/additem/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const updatedData = req.body;
-    const options = { new: true };
-
-    const result = await itemsModel.findByIdAndUpdate(
-      id, updatedData, options
     )
 
     res.send(result)
