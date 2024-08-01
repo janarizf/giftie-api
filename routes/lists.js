@@ -1,5 +1,6 @@
 var express = require('express');
 var listsModel = require('../model/listsmodel');
+var customurlmodel = require('../model/customurlmodel')
 var imagesmodel = require('../model/imagesmodel');
 var groupsmodel = require('../model/groupsmodel');
 var router = express.Router();
@@ -134,6 +135,40 @@ router.delete('/delete/:id', async (req, res) => {
     res.status(400).json({ message: error.message })
   }
 })
+
+router.post('/reserveurl', jsonParser, async (req, res) => {
+  const data = new customurlmodel({
+    url: req.body.url,
+    approved: req.body.approved,
+    approvedById: req.body.approvedById,
+    approvedDate: req.body.approvedDate,
+    createdById: req.body.createdById,
+    createdDate: req.body.createdDate,
+    updatedById: req.body.updatedById,
+    updatedDate: req.body.updatedDate,
+  })
+  //data.url = data._id;
+
+  try {
+    const dataToSave = await data.save();
+    res.status(200).json(dataToSave)
+  }
+  catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+
+})
+
+router.get('/retrieveurl/:url', async (req, res) => {
+  try {
+    const data = await customurlmodel.find({ url: req.params.url });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 
 
 router.post('/fileupload', jsonParser, async (req, res) => {
