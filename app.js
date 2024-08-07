@@ -16,9 +16,10 @@ var shopee = require('./routes/shopee')
 
 var adminUserRouter = require("./routes/admin/adminuser/adminuser")
 var themesRouter = require("./routes/admin/themes/themes")
-var listCategoriesModel = require("./routes/admin/categories/listcategories")
-var itemCategoriesModel = require("./routes/admin/categories/itemcategories")
-var themesCategoriesModel = require("./routes/admin/categories/themescategories")
+var listCategoriesRouter = require("./routes/admin/categories/listcategories")
+var itemCategoriesRouter = require("./routes/admin/categories/itemcategories")
+var themesCategoriesRouter = require("./routes/admin/categories/themescategories")
+var subscriptionlistRouter = require("./routes/subscriptionList")
 const mongoose = require('mongoose');
 
 main().catch(err => console.log(err));
@@ -57,6 +58,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/userssettings', userSettingsRouter);
+app.use('/subscriptionlist', subscriptionlistRouter);
+
 
 app.use("/groups", groupsRouter);
 app.use("/lists", listsRouter);
@@ -67,9 +70,9 @@ app.use("/shopee", shopee)
 
 app.use('/admin/user', adminUserRouter)
 app.use('/admin/themes', themesRouter)
-app.use('/admin/category/item', itemCategoriesModel)
-app.use('/admin/category/list', listCategoriesModel)
-app.use('/admin/category/themes', themesCategoriesModel)
+app.use('/admin/category/item', itemCategoriesRouter)
+app.use('/admin/category/list', listCategoriesRouter)
+app.use('/admin/category/themes', themesCategoriesRouter)
 
 
 
