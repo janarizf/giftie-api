@@ -24,6 +24,7 @@ router.post('/create',jsonParser, async (req, res) => {
     contactNumber: req.body.contactNumber,
     photo: "",
     enabled: true,
+    accountType: req.body.accountType,
     dateJoined: new Date(),
     createdBy: req.body.userName,
     createdDate: new Date(),
