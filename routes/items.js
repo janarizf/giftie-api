@@ -12,7 +12,7 @@ const url = "mongodb+srv://admin:admin@giftie01.b3zn93e.mongodb.net/giftie";
 
 const mongoClient = new MongoClient(url);
 
-const upload = require("../middleware/upload");
+//const upload = require("../middleware/upload");
 /* GET users listing. */
 router.get('/', async function (req, res, next) {
 
@@ -160,17 +160,17 @@ router.delete('/delete/:id', async (req, res) => {
 })
 
 
-router.post('/fileupload', jsonParser, async (req, res) => {
-  try {
-    await upload(req, res);
-    console.log(req.files);
-    var files = req.files;
-    res.status(200).json(files);
-  }
-  catch (error) {
-    res.status(400).json({ message: error.message })
-  }
-})
+// router.post('/fileupload', jsonParser, async (req, res) => {
+//   try {
+//     await upload(req, res);
+//     console.log(req.files);
+//     var files = req.files;
+//     res.status(200).json(files);
+//   }
+//   catch (error) {
+//     res.status(400).json({ message: error.message })
+//   }
+// })
 
 router.get('/getAllFiles', async (req, res) => {
   try {
