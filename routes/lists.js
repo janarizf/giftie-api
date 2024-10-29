@@ -1,7 +1,6 @@
 var express = require('express');
 var listsModel = require('../model/listsmodel');
 var customurlmodel = require('../model/customurlmodel')
-var imagesmodel = require('../model/imagesmodel');
 var groupsmodel = require('../model/groupsmodel');
 var router = express.Router();
 var bodyParser = require('body-parser')
@@ -35,7 +34,7 @@ router.post('/create', jsonParser, async (req, res) => {
     eventDate: req.body.eventDate,
     views: req.body.views,
     received: req.body.received,
-    themes: req.body.themes,
+    themesId: req.body.themesId,
     private: req.body.private,
     url: req.body.url,
     followers: req.body.followers,
@@ -67,6 +66,7 @@ router.get('/getAll', async (req, res) => {
   }
 
 })
+
 router.get('/getByUser/:user', async (req, res) => {
   try {
     const data = await listsModel.find({ userId: req.params.user });
@@ -76,6 +76,31 @@ router.get('/getByUser/:user', async (req, res) => {
     res.status(500).json({ message: error.message })
   }
 })
+
+router.get('/getByUserBeforeDate/:user', async (req, res) => {
+  try {
+    const dateNow = Date.now();
+    console.log(dateNow);
+    const data = await listsModel.find({ userId: req.params.user, eventDate: { $lt: dateNow } });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
+router.get('/getByUserAfterDate/:user', async (req, res) => {
+  try {
+    const dateNow = Date.now();
+    console.log(dateNow);
+    const data = await listsModel.find({ userId: req.params.user, eventDate: { $gt: dateNow } });
+    res.json(data);
+  }
+  catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 router.get('/getByFollower/:user', async (req, res) => {
   try {
     const data = await listsModel.find({ "followers.userId": req.params.user });

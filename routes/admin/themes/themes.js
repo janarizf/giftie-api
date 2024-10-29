@@ -28,6 +28,16 @@ router.get('/getAllThemes', jsonParser, async (req, res) => {
     }
   });
   
+  router.get('/getActiveThemes', async (req, res) => {
+    try {
+      const data = await themesmodel.find({active: true});
+      res.json(data);
+    }
+    catch (error) {
+      res.status(500).json({ message: error.message })
+    }
+  });
+  
   router.get('/getThemesByCategory/:cat', async (req, res) => {
     try {
       const data = await themesmodel.find({category_id: req.params.cat});

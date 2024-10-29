@@ -1,14 +1,16 @@
 const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
-    name: { required: true, type: String },
-    category_id: { required: true, type: String },
-    headercolor: { required: true, type: String },
-    bodycolor: { required: true, type: String },
-    textcolor: { required: true, type: String },
-    headerimage: { required: true, type: String },
+    theme: { required: true, type: String },
+    description: {type: String},
+    category_id: {required: true, type: String },
+    headercolor: {type: String },
+    bodycolor: {type: String },
+    textcolor: {type: String },
     backgroundimage: { required: true, type: String },
-
+    private: { required: true, type: Boolean },
+    active: { required: true, type: Boolean },
+  
 })
 
 module.exports = mongoose.model('themes', dataSchema)

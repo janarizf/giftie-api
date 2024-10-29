@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/1f173a72-089f-42c3-9aea-82dd06124341/resourceGroups/GiftieApiDev/providers/Microsoft.Web/sites/GiftieApiDev",
+    "appService.deploySubpath": "."
+}

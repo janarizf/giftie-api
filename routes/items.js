@@ -1,6 +1,5 @@
 var express = require('express');
 var itemsModel = require('../model/itemsmodel');
-var imagesmodel = require('../model/imagesmodel');
 var router = express.Router();
 var bodyParser = require('body-parser')
 var jsonParser = bodyParser.json();
@@ -171,16 +170,6 @@ router.delete('/delete/:id', async (req, res) => {
 //     res.status(400).json({ message: error.message })
 //   }
 // })
-
-router.get('/getAllFiles', async (req, res) => {
-  try {
-    const data = await imagesmodel.find().limit(1);
-    res.json(data[0]._doc)
-  }
-  catch (error) {
-    res.status(500).json({ message: error.message })
-  }
-})
 
 router.get('/getImage/:name', jsonParser, async (req, res) => {
   try {

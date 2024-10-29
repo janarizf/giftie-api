@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
     name: { required: true, type: String },
-    image: [{type: String}],
+    image: { type: String },
     groupIds: [{type: String}],
     userId: { required: true, type: String },
     statusId: { type: String },
@@ -12,7 +12,7 @@ const dataSchema = new mongoose.Schema({
     eventDate: { type: Date },
     views: { type: Number },
     received: { type: Number },
-    themes: { type: String },
+    themesId: { type: String },
     private: {type: Boolean},
     url: { type: String },
     followers:[{

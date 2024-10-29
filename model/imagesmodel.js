@@ -1,9 +1,12 @@
-const mongoose = require('mongoose');
+var mongoose = require('mongoose');
+var imageSchema = new mongoose.Schema({
+    name: String,
+    desc: String,
+    img:
+    {
+        data: Buffer,
+        contentType: String
+    }
+});
 
-const dataSchema = new mongoose.Schema({
-    files_id: { type: String },
-    n: { type: Number },
-    data: {data: Buffer, contentType: String}
-})
-
-module.exports = mongoose.model('images.chunks', dataSchema)
+module.exports = mongoose.model('Image', imageSchema);

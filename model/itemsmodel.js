@@ -4,12 +4,9 @@ const dataSchema = new mongoose.Schema({
     listId: { required: true, type: String },
     name: { required: true, type: String },
     website: { type: String },
-    links: [{ url: { type: String } }],
+    links: [{ type: String }],
     categoryId: { type: String },
-    image: [{
-        id: { type: String },
-        filename: { type: String }
-    }],
+    image: [{ type: String }],
     description: { type: String },
     price: { type: Number },
     quantity: { type: Number },
