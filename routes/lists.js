@@ -80,7 +80,6 @@ router.get('/getByUser/:user', async (req, res) => {
 router.get('/getByUserBeforeDate/:user', async (req, res) => {
   try {
     const dateNow = Date.now();
-    console.log(dateNow);
     const data = await listsModel.find({ userId: req.params.user, eventDate: { $lt: dateNow } });
     res.json(data);
   }
@@ -92,7 +91,6 @@ router.get('/getByUserBeforeDate/:user', async (req, res) => {
 router.get('/getByUserAfterDate/:user', async (req, res) => {
   try {
     const dateNow = Date.now();
-    console.log(dateNow);
     const data = await listsModel.find({ userId: req.params.user, eventDate: { $gt: dateNow } });
     res.json(data);
   }
